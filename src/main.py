@@ -75,4 +75,68 @@ def main():
         print("0. Exit")
         print("-"*30)
         
-        choice = input("Enter choice:
+        choice = input("Enter choice: ").strip()
+        
+        if choice == '1':
+            print("\nALL PROJECTS:")
+            print("-"*50)
+            for p in projects:
+                print(
+                    f"[{p.get('Project ID')}] "
+                    f"{p.get('Project Name')} | "
+                    f"{p.get('Status')} | "
+                    f"{p.get('Progress %')}%"
+                )
+        
+        elif choice == '2':
+            print("\nSelect Status:")
+            print("1. Completed")
+            print("2. In Progress")
+            print("3. Not Started")
+            status_choice = input("Enter choice: ").strip()
+            status_map = {
+                '1': 'Completed',
+                '2': 'In Progress',
+                '3': 'Not Started'
+            }
+            status = status_map.get(status_choice)
+            if status:
+                filtered = dashboard.get_projects_by_status(
+                    status
+                )
+                print(f"\n{status.upper()} PROJECTS:")
+                for p in filtered:
+                    print(f"  - {p.get('Project Name')}")
+        
+        elif choice == '3':
+            overdue = dashboard.get_overdue_projects()
+            if overdue:
+                print("\nOVERDUE PROJECTS:")
+                for p in overdue:
+                    print(f"  ⚠️  {p.get('Project Name')}")
+            else:
+                print("\n✅ No overdue projects!")
+        
+        elif choice == '4':
+            high = dashboard.get_projects_by_priority('High')
+            print("\nHIGH PRIORITY PROJECTS:")
+            for p in high:
+                print(
+                    f"  🔴 {p.get('Project Name')} | "
+                    f"{p.get('Progress %')}%"
+                )
+        
+        elif choice == '5':
+            dashboard.load_data()
+            dashboard.print_dashboard()
+        
+        elif choice == '0':
+            print("\n✅ Thank you for using Project Dashboard!")
+            break
+        
+        else:
+            print("❌ Invalid choice!")
+
+
+if __name__ == "__main__":
+    main()
